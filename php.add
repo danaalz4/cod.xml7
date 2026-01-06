@@ -1,0 +1,217 @@
+<?php
+
+$name   = $_POST['name'];
+
+$Email  = $_POST['Email'];
+
+$Course = $_POST['Course'];
+
+
+
+$xml = new DOMDocument("1.0", "UTF-8");
+
+$xml->load("TraineesXML.xml");
+
+
+
+$root = $xml->getElementsByTagName("Trainees")->item(0);
+
+
+
+$trainee = $xml->createElement("Trainee");
+
+$trainee->appendChild($xml->createElement("name", $name));
+
+$trainee->appendChild($xml->createElement("Email", $Email));
+
+$trainee->appendChild($xml->createElement("Course", $Course));
+
+
+
+$root->appendChild($trainee);
+
+
+
+$xml->save("TraineesXML.xml");
+
+
+
+header("Location: TraineesXML.xml");
+
+exit;
+<?php
+
+$index = $_POST['index'] - 1;
+
+
+
+$xml = new DOMDocument("1.0", "UTF-8");
+
+$xml->load("TraineesXML.xml");
+
+
+
+$trainees = $xml->getElementsByTagName("Trainee");
+
+
+
+if ($trainees->item($index)) {
+
+    $trainees->item($index)->parentNode
+
+        ->removeChild($trainees->item($index));
+
+}
+
+
+
+$xml->save("TraineesXML.xml");
+
+
+
+header("Location: TraineesXML.xml");
+
+exit;
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsl:stylesheet version="1.0"
+
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+
+
+<xsl:template match="/">
+
+<html>
+
+<body>
+
+
+
+<h2>Trainees Information</h2>
+
+
+
+<table border="1">
+
+<tr>
+
+  <th>Name</th>
+
+  <th>Email</th>
+
+  <th>Course</th>
+
+  <th>Action</th>
+
+</tr>
+
+
+
+<xsl:for-each select="Trainees/Trainee">
+
+<tr>
+
+  <td><xsl:value-of select="name"/></td>
+
+  <td><xsl:value-of select="Email"/></td>
+
+  <td><xsl:value-of select="Course"/></td>
+
+  <td>
+
+    <form action="delete.php" method="post">
+
+      <input type="hidden" name="index" value="{position()}"/>
+
+      <input type="submit" value="Delete"/>
+
+    </form>
+
+  </td>
+
+</tr>
+
+</xsl:for-each>
+
+
+
+</table>
+
+
+
+<br><br>
+
+
+
+<h3>Add trainee</h3>
+
+<form action="add.php" method="post">
+
+  Name: <input type="text" name="name" required>
+
+  Email: <input type="email" name="Email" required>
+
+  Course: <input type="text" name="Course" required>
+
+  <input type="submit" value="Add">
+
+</form>
+
+
+
+</body>
+
+</html>
+
+</xsl:template>
+
+
+
+</xsl:stylesheet>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet type="text/xsl" href="TraineesXSIT.xsl"?>
+
+<Trainees>
+
+
+
+  <Trainee>
+
+    <name>Remaas</name>
+
+    <Email>Remaas@Email.com</Email>
+
+    <Course>Data development</Course>
+
+  </Trainee>
+
+
+
+  <Trainee>
+
+    <name>Mayar</name>
+
+    <Email>Mayar@Email.com</Email>
+
+    <Course>Data development</Course>
+
+  </Trainee>
+
+
+
+  <Trainee>
+
+    <name>Norah</name>
+
+    <Email>Norah@Email.com</Email>
+
+    <Course>Data development</Course>
+
+  </Trainee>
+
+
+
+</Trainees>
